@@ -1,24 +1,35 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import "./style.css";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
+document.querySelector<HTMLDivElement>("#app")!.innerHTML = /*html*/ `
+  <section >
+  <div class="boxes">
+  <div class="box">
   </div>
-`
+  <div class="box">
+  </div>
+  <div class="box">
+  </div>
+  </div>
+  <div class="inputs">
+  <label for="padding">Padding</label>
+  <input name="padding" value="10" id="padding" type="range" min="10" max="50"/>
+  <label for="border">Border</label>
+  <input name="border" value="1" id="border" type="range" min="1" max="10">
+  <label for="background-color">Background</label>
+  <input name="background-color" value="#646cff" id="background-color" type="color" >
+  </div>
+  </section>
+`;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function handleInput(this: HTMLInputElement) {
+  const suffix = this.type === "color" ? "" : "px";
+  document.documentElement.style.setProperty(
+    `--${this.name}`,
+    `${this.value}${suffix}`
+  );
+}
+
+const InputElements = document.querySelectorAll("input");
+InputElements.forEach((el) => {
+  el.addEventListener("input", handleInput);
+});
