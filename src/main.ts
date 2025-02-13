@@ -1,24 +1,45 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import "./style.css";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
+document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+  <div class="outer">
+  
   </div>
-`
+`;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// const inner = document.querySelectorAll<HTMLDivElement>(".inner");
+const outer = document.querySelector<HTMLDivElement>(
+  ".outer"
+) as HTMLDivElement;
+
+for (let i = 0; i < 20; i++) {
+  const child = document.createElement("div");
+  child.innerText = `${i + 1}`;
+  child.classList.add("inner");
+  outer.appendChild(child);
+}
+let grabbed = false;
+let grabPoint: number;
+let scrollTopPoint: number;
+
+outer.addEventListener(
+  "mousemove",
+  function (this: HTMLDivElement, e: MouseEvent) {
+    e.preventDefault();
+    if (!grabbed) return;
+    outer.scrollTop = scrollTopPoint + grabPoint - e.pageY;
+  }
+);
+
+outer.addEventListener("mousedown", function (this: HTMLDivElement, e) {
+  e.preventDefault();
+  grabbed = true;
+  grabPoint = e.pageY - this.offsetTop;
+  scrollTopPoint = this.scrollTop;
+  console.log("mousedown");
+});
+outer.addEventListener("mouseup", function (this, e) {
+  e.preventDefault();
+  console.log("mouseup");
+  grabbed = false;
+  grabPoint = 0;
+});
